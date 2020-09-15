@@ -10,6 +10,7 @@ class Content(models.Model):
     heading = models.ForeignKey(Heading, on_delete=models.CASCADE)
     title_text = models.CharField(max_length=50)
     content_text = models.FileField(upload_to='myapp/files', null=True)
+    created_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title_text

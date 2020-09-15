@@ -28,7 +28,7 @@ def show_headings(request):
 def show_contents(request, pk):
     response = {}
     try:
-        contents = Content.objects.filter(id=pk)
+        contents = Content.objects.filter(heading=pk)
         response['list'] = json.loads(serializers.serialize("json", contents))
         for item in response['list']:
             item['fields']['content_text'] = read_file(item['fields']['content_text'])

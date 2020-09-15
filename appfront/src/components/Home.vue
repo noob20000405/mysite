@@ -1,13 +1,18 @@
 <template>
-  <div class="home">
-  <div>{{ headingList }}</div>
+  <div class="home" :key="time">
+  Home :
+  <!--<div>{{ headingList }}</div>-->
     <el-row>
-        <table>
-          <tr v-for="item in headingList">
-            {{ item.fields.heading_text }}
-          </tr>
-        </table>
+      <div v-for="(item, index) in headingList">
+        <div @click="re(item.pk)">{{ item.fields.heading_text }}, pk : {{ item.pk }}</div>
+
+        <!--<router-link :to="{path:item.pk}" :key="item.pk" tag="a">
+          link
+        </router-link>-->
+
+      </div>
     </el-row>
+    <router-view></router-view>
   </div>
 
 </template>
@@ -17,11 +22,17 @@ export default {
   name: 'home',
   data () {
     return {
-      headingList: []
+      headingList: [],
+      time: 1
     }
   },
   mounted: function () {
     this.showHeadings ()
+  },
+  watch: {
+    '$route'(){
+      this.time = new Date().getTime()
+    }
   },
   methods: {
     showHeadings() {
@@ -36,6 +47,10 @@ export default {
             console.log(res['msg'])
           }
         })
+    },
+    re(param) {
+      var p = param.toString()
+      this.$router.push({path: p})
     }
   }
 }
