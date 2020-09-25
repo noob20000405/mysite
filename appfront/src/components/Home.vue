@@ -1,30 +1,51 @@
 <template>
   <div class="home" :key="time">
-  Home :
-  <!--<div>{{ headingList }}</div>-->
-    <el-row>
-      <div v-for="(item, index) in headingList">
-        <div @click="re(item.pk)">{{ item.fields.heading_text }}, pk : {{ item.pk }}</div>
 
-        <!--<router-link :to="{path:item.pk}" :key="item.pk" tag="a">
-          link
-        </router-link>-->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Log</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav navbar-right" v-for="(item, index) in headingList">
+                <li ><div class="nav-item" @click="re(item.pk)">{{ item.fields.heading_text }}</div></li>
+            </ul>
+        </div>
+        </div>
+    </nav>
 
-      </div>
-    </el-row>
-    <router-view></router-view>
+    <div class="content">
+      <el-row>
+        <el-col :span="8" :offset="5">
+          <div class="left-card">
+            <router-view></router-view>
+          </div>
+        </el-col>
+        <el-col :span="4" :offset="1">
+          <el-card>Personal infos</el-card>
+        </el-col>
+      </el-row>
+    </div>
+
+    <footer :style="'position: absolute;top: ' + screenHeight + 'px;'">{{ copyright }}</footer>
+
   </div>
-
 </template>
 
 <script>
+import Markdown from 'vue-meditor';
 export default {
   name: 'home',
   data () {
     return {
       headingList: [],
-      time: 1
+      time: 1,
+      screenHeight: document.documentElement.clientHeight - 50,
+      copyright: '©2020 Renwen'
     }
+  },
+  components: {
+    Markdown
   },
   mounted: function () {
     this.showHeadings ()
@@ -50,8 +71,8 @@ export default {
     },
     re(param) {
       var p = param.toString()
-      this.$router.push({path: p})
-    }
+      this.$router.push({path: '/home/' + p})
+    },
   }
 }
 </script>
@@ -67,12 +88,51 @@ ul {
   padding: 0;
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+/* navbar */
+.navbar-default .navbar-brand {
+  color: #f2f2f2;
+}
+.navbar {
+  background-color: #65758a;
+  border: 0ch;
+  border-radius: 0ch;
+  font-size: 1.25em;
+  color: #f2f2f2;
 }
 
-a {
-  color: #42b983;
+.nav-item {
+  height: 50px;
+  display: inline-block;
+  font-size: 1.25em;
+  color: #f2f2f2;
+  padding: 15px 15px;
+  transition: .4s;
+}
+
+.nav-item:hover {
+  padding-top: 10px;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+/* content */
+.content {
+  margin-top: 40px;
+}
+
+/* left card */
+.left-card {
+  border: 1px solid #EBEEF5;
+  border-radius: 3px;
+}
+
+.markdown-content {
+  display: none;
+}
+
+/* footer */
+footer {
+  width: 100%;
+  text-align: center;
 }
 </style>
